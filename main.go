@@ -1,5 +1,7 @@
 package main
 
+import "dolar-price-scrapper/scrapper"
+
 func main() {
-	println("Hello world from Dolar Price Scrapper!")
+	scrapper.GetDolarPrice()
 }
