@@ -1,7 +1,13 @@
 package main
 
-import "dolar-price-scrapper/scrapper"
+import (
+	"dolar-price-scrapper/server"
+	"dolar-price-scrapper/server/configs"
+)
 
 func main() {
-	scrapper.GetDolarPrice()
+	// scrapper.GetDolarPrice()
+
+	configs.ConnectDB()
+	server.RunServer()
 }
