@@ -1,0 +1,8 @@
+# Environments
+.env
+.env.local
+.env.prod
+.env.dev
+
+# Database volumes
+_db-mongo-volume
