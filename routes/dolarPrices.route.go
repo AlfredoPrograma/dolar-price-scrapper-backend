@@ -7,5 +7,6 @@ import (
 )
 
 func DolarPricesRoute(e *echo.Echo) {
+	e.GET("/dolar-prices", controllers.GetDolarPrices)
 	e.POST("/dolar-prices", controllers.SaveDolarPrice)
 }

@@ -7,10 +7,12 @@ import (
 	"dolar-price-server/models"
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -42,4 +44,23 @@ func SaveDolarPrice(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusCreated, &echo.Map{"data": result})
+}
+
+func GetDolarPrices(c echo.Context) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var dolarPrices []models.DolarPricesModel
+
+	cursor, err := dolarPricesCollection.Find(ctx, bson.D{})
+
+	if err != nil {
+		log.Fatal(err)
+		return c.JSON(http.StatusInternalServerError, &echo.Map{"error": "Error searching data"})
+	}
+
+	cursor.All(ctx, &dolarPrices)
+
+	defer cursor.Close(ctx)
+	return c.JSON(200, dolarPrices)
 }

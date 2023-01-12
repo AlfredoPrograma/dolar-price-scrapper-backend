@@ -12,18 +12,24 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func EnvMongoURI() string {
+func EnvMongoURI(e string) string {
 	err := godotenv.Load()
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	return os.Getenv("MONGO_URI")
+	DB_URI_ENV_MAP := map[string]string{
+		"PROD": os.Getenv("MONGO_URI"),
+		"TEST": os.Getenv("MONGO_URI_TEST"),
+	}
+
+	return DB_URI_ENV_MAP[e]
 }
 
 func ConnectDB() *mongo.Client {
-	client, err := mongo.NewClient(options.Client().ApplyURI(EnvMongoURI()))
+	DB_URI := EnvMongoURI("TEST")
+	client, err := mongo.NewClient(options.Client().ApplyURI(DB_URI))
 
 	if err != nil {
 		log.Fatal(err)
@@ -41,7 +47,7 @@ func ConnectDB() *mongo.Client {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Connected to MongoDB!")
+	fmt.Printf("Connected to MongoDB \nENV: %v", DB_URI)
 
 	defer cancel()
 	return client
