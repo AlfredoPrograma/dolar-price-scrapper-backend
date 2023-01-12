@@ -12,6 +12,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// TODO: Make package to get all .ENV vars easily
+// TODO: Move some functions to the correct files (why is ConnectDB in env.go file ??)
 func EnvMongoURI(e string) string {
 	err := godotenv.Load()
 
@@ -54,7 +56,9 @@ func ConnectDB() *mongo.Client {
 }
 
 func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("dollar-prices-db").Collection(collectionName)
+	DB_NAME := os.Getenv("DB_NAME")
+
+	collection := client.Database(DB_NAME).Collection(collectionName)
 	return collection
 }
 

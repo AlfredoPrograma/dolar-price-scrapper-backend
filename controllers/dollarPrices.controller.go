@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"dollar-price-server/common"
-	"dollar-price-server/configs"
 	"dollar-price-server/models"
 	"encoding/json"
 	"io"
@@ -12,11 +11,8 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
-var dollarPricesCollection = configs.GetCollection(configs.M, "dollar-prices")
 
 func SaveDollarPrice(c echo.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -37,30 +33,26 @@ func SaveDollarPrice(c echo.Context) error {
 		Date:   time.Now(),
 	}
 
-	result, err := dollarPricesCollection.InsertOne(ctx, newDollarPrice)
+	err = newDollarPrice.Save(ctx)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, &echo.Map{"error": "Error inserting data"})
 	}
 
-	return c.JSON(http.StatusCreated, &echo.Map{"data": result})
+	return c.JSON(http.StatusCreated, &echo.Map{"data": newDollarPrice})
 }
 
 func GetDollarPrices(c echo.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	var dollarPricesList []models.DollarPrices
+	var dollarPricesList models.DollarPricesList
 
-	cursor, err := dollarPricesCollection.Find(ctx, bson.D{})
+	err := dollarPricesList.FindAll(ctx)
 
 	if err != nil {
 		log.Fatal(err)
-		return c.JSON(http.StatusInternalServerError, &echo.Map{"error": "Error searching data"})
 	}
 
-	cursor.All(ctx, &dollarPricesList)
-
-	defer cursor.Close(ctx)
 	return c.JSON(200, dollarPricesList)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"dollar-price-server/configs"
 	"dollar-price-server/routes"
 
 	"github.com/labstack/echo/v4"
@@ -14,8 +13,6 @@ func main() {
 }
 
 func runServer() {
-	configs.ConnectDB()
-
 	loadRoutes()
 	e.Logger.Fatal(e.Start(":8080"))
 }
