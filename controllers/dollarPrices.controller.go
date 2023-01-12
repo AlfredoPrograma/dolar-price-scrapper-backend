@@ -18,14 +18,15 @@ func SaveDollarPrice(c echo.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	var prices common.DollarPricesSources
+	prices := common.DollarPricesSources{}
 
 	bytesBody, err := io.ReadAll(c.Request().Body)
-	json.Unmarshal(bytesBody, &prices)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, &echo.Map{"error": "Error reading request body"})
 	}
+
+	json.Unmarshal(bytesBody, &prices)
 
 	newDollarPrice := models.DollarPrices{
 		Id:     primitive.NewObjectID(),
@@ -46,7 +47,7 @@ func GetDollarPrices(c echo.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	var dollarPricesList models.DollarPricesList
+	dollarPricesList := models.DollarPricesList{}
 
 	err := dollarPricesList.FindAll(ctx)
 

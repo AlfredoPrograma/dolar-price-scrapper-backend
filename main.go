@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dollar-price-server/configs"
 	"dollar-price-server/routes"
 
 	"github.com/labstack/echo/v4"
@@ -18,5 +19,10 @@ func loadRoutes() {
 }
 
 func main() {
+	configs.LoadEnv()
+
+	configs.DB = configs.CreateMongoClient()
+	configs.ConnectMongoDB(configs.DB)
+
 	runServer()
 }

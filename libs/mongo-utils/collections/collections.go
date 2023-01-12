@@ -1,7 +1,7 @@
 package collections
 
 import (
-	"os"
+	"dollar-price-server/configs"
 	"strings"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,7 +24,6 @@ func StringifyCollectionName(s string) string {
 	}
 
 	for _, v := range upperIndexes {
-		// dollarprices
 		firstPart, secondPart := collectionNameArr[:v], collectionNameArr[v:]
 
 		collectionName = strings.Join(firstPart, "") + "-" + strings.Join(secondPart, "")
@@ -34,8 +33,8 @@ func StringifyCollectionName(s string) string {
 }
 
 func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	DB_NAME := os.Getenv("DB_NAME")
+	dbName := configs.GetEnvVar("DB_NAME")
 
-	collection := client.Database(DB_NAME).Collection(collectionName)
+	collection := client.Database(dbName).Collection(collectionName)
 	return collection
 }

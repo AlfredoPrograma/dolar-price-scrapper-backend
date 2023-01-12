@@ -1,25 +1,61 @@
 package configs
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
 
-// TODO: Make package to get all .ENV vars easily
-// TODO: Move some functions to the correct files (why is ConnectDB in env.go file ??)
-func EnvMongoURI(e string) string {
-	err := godotenv.Load()
+const (
+	LOCAL = "LOCAL"
+	DEV   = "DEV"
+	PROD  = "PROD"
+)
+
+type EnvVarsMap map[string]string
+
+const CURRENT_ENV = DEV
+
+var envVarsMap = EnvVarsMap{}
+
+func LoadEnv() {
+	err := godotenv.Load(getEnvFilename())
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	DB_URI_ENV_MAP := map[string]string{
-		"PROD": os.Getenv("MONGO_URI"),
-		"TEST": os.Getenv("MONGO_URI_TEST"),
+	loadEnvVarsMap()
+}
+
+func GetEnvVar(e string) string {
+	v := envVarsMap[e]
+
+	return v
+}
+
+func getEnvFilename() string {
+	return fmt.Sprintf(".env.%v", strings.ToLower(CURRENT_ENV))
+}
+
+func loadEnvVarsMap() {
+	b, err := os.ReadFile(getEnvFilename())
+
+	if err != nil {
+		log.Fatalln(err)
 	}
 
-	return DB_URI_ENV_MAP[e]
+	lines := strings.Split(string(b), "\n")
+
+	for _, l := range lines {
+		if string(l[0]) == "#" {
+			continue
+		}
+
+		key, value := strings.Split(l, "=")[0], strings.Split(l, "=")[1]
+		envVarsMap[key] = value
+	}
 }

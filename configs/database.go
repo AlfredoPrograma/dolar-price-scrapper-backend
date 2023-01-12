@@ -10,16 +10,21 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func connectDB() *mongo.Client {
-	DB_URI := EnvMongoURI("TEST")
-	client, err := mongo.NewClient(options.Client().ApplyURI(DB_URI))
+func CreateMongoClient() *mongo.Client {
+	mongoUri := GetEnvVar("MONGO_URI")
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	return client
+}
+
+func ConnectMongoDB(client *mongo.Client) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
+	defer cancel()
+	err := client.Connect(ctx)
 
 	if err != nil {
 		log.Fatal(err)
@@ -30,10 +35,7 @@ func connectDB() *mongo.Client {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Connected to MongoDB \nENV: %v", DB_URI)
-
-	defer cancel()
-	return client
+	fmt.Printf("Connected to MongoDB \nENV: %v", CURRENT_ENV)
 }
 
-var DB = connectDB()
+var DB *mongo.Client
