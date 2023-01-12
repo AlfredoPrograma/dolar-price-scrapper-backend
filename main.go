@@ -1,13 +1,25 @@
 package main
 
 import (
-	"dolar-price-scrapper/server"
-	"dolar-price-scrapper/server/configs"
+	"dolar-price-server/configs"
+	"dolar-price-server/routes"
+
+	"github.com/labstack/echo/v4"
 )
 
-func main() {
-	// scrapper.GetDolarPrice()
+var e = echo.New()
 
+func main() {
+	runServer()
+}
+
+func runServer() {
 	configs.ConnectDB()
-	server.RunServer()
+
+	loadRoutes()
+	e.Logger.Fatal(e.Start(":8080"))
+}
+
+func loadRoutes() {
+	routes.DolarPricesRoute(e)
 }

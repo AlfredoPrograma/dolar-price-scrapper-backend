@@ -1,4 +1,4 @@
-module dolar-price-scrapper
+module dolar-price-server
 
 go 1.19
 

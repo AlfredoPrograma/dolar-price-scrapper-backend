@@ -23,7 +23,6 @@ func EnvMongoURI() string {
 }
 
 func ConnectDB() *mongo.Client {
-
 	client, err := mongo.NewClient(options.Client().ApplyURI(EnvMongoURI()))
 
 	if err != nil {

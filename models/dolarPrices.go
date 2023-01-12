@@ -1,7 +1,8 @@
 package models
 
 import (
-	"dolar-price-scrapper/server/common"
+	"dolar-price-server/common"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -9,4 +10,5 @@ import (
 type DolarPricesModel struct {
 	Id     primitive.ObjectID `json:"id"`
 	Prices common.DolarPrices `json:"prices"`
+	Date   time.Time          `json:"created_at"`
 }

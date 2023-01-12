@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"dolar-price-scrapper/server/controllers"
+	"dolar-price-server/controllers"
 
 	"github.com/labstack/echo/v4"
 )

@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"context"
-	"dolar-price-scrapper/server/common"
-	"dolar-price-scrapper/server/configs"
-	"dolar-price-scrapper/server/models"
+	"dolar-price-server/common"
+	"dolar-price-server/configs"
+	"dolar-price-server/models"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -32,6 +32,7 @@ func SaveDolarPrice(c echo.Context) error {
 	newDolarPrice := models.DolarPricesModel{
 		Id:     primitive.NewObjectID(),
 		Prices: prices,
+		Date:   time.Now(),
 	}
 
 	result, err := dolarPricesCollection.InsertOne(ctx, newDolarPrice)
