@@ -30,7 +30,7 @@ func (l DollarPricesList) ElemToString() string {
 }
 
 func (m *DollarPrices) Save(ctx context.Context) error {
-	c := configs.GetCollection(configs.M, collections.GetCollectionName(m.ToString()))
+	c := collections.GetCollection(configs.DB, collections.StringifyCollectionName(m.ToString()))
 	_, err := c.InsertOne(ctx, m)
 
 	if err != nil {
@@ -41,7 +41,7 @@ func (m *DollarPrices) Save(ctx context.Context) error {
 }
 
 func (l *DollarPricesList) FindAll(ctx context.Context) error {
-	c := configs.GetCollection(configs.M, collections.GetCollectionName(l.ElemToString()))
+	c := collections.GetCollection(configs.DB, collections.StringifyCollectionName(l.ElemToString()))
 
 	cursor, err := c.Find(ctx, bson.D{})
 

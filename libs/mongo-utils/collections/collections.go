@@ -1,8 +1,13 @@
 package collections
 
-import "strings"
+import (
+	"os"
+	"strings"
 
-func GetCollectionName(s string) string {
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+func StringifyCollectionName(s string) string {
 	_, base := strings.Split(s, ".")[0], strings.Split(s, ".")[1]
 	upperIndexes := []int{}
 	collectionNameArr := strings.Split(strings.ToLower(base), "")
@@ -26,4 +31,11 @@ func GetCollectionName(s string) string {
 	}
 
 	return collectionName
+}
+
+func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	DB_NAME := os.Getenv("DB_NAME")
+
+	collection := client.Database(DB_NAME).Collection(collectionName)
+	return collection
 }
