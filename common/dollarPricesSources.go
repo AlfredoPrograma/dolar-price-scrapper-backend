@@ -1,6 +1,6 @@
 package common
 
-type DolarPrices struct {
+type DollarPricesSources struct {
 	BCV               float64
 	EnParaleloVzla    float64
 	DolarToday        float64

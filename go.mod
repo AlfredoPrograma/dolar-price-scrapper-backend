@@ -1,4 +1,4 @@
-module dolar-price-server
+module dollar-price-server
 
 go 1.19
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"dolar-price-server/configs"
-	"dolar-price-server/routes"
+	"dollar-price-server/configs"
+	"dollar-price-server/routes"
 
 	"github.com/labstack/echo/v4"
 )
@@ -21,5 +21,5 @@ func runServer() {
 }
 
 func loadRoutes() {
-	routes.DolarPricesRoute(e)
+	routes.DollarPricesRouter(e)
 }
