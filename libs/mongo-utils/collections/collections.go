@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// TODO: Improve this func
 func StringifyCollectionName(s string) string {
 	_, base := strings.Split(s, ".")[0], strings.Split(s, ".")[1]
 	upperIndexes := []int{}

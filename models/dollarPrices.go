@@ -58,3 +58,16 @@ func (l *DollarPricesList) FindAll(ctx context.Context) error {
 	defer cursor.Close(ctx)
 	return nil
 }
+
+func (l *DollarPricesList) InsertMany(ctx context.Context) error {
+	c := collections.GetCollection(configs.DB, collections.StringifyCollectionName(l.ElemToString()))
+	v := make([]any, len(*l))
+
+	for i := range v {
+		v[i] = (*l)[i]
+	}
+
+	_, err := c.InsertMany(ctx, v)
+
+	return err
+}

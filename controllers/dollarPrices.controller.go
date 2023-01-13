@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -56,4 +57,23 @@ func GetDollarPrices(c echo.Context) error {
 	}
 
 	return c.JSON(200, dollarPricesList)
+}
+
+func SeedDatabase(c echo.Context) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	b, err := os.ReadFile("prices.json")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dollarPricesList := models.DollarPricesList{}
+
+	json.Unmarshal(b, &dollarPricesList)
+
+	dollarPricesList.InsertMany(ctx)
+
+	return c.JSON(http.StatusCreated, &echo.Map{"ok": true, "msg": dollarPricesList})
 }

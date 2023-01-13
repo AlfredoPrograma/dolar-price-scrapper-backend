@@ -9,6 +9,10 @@ import (
 func DollarPricesRouter(e *echo.Echo) {
 	g := e.Group("/dollar-prices")
 
+	// Public routes
 	g.GET("", controllers.GetDollarPrices)
 	g.POST("", controllers.SaveDollarPrice)
+
+	g.GET("/seed", controllers.SeedDatabase)
+
 }
