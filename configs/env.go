@@ -17,7 +17,7 @@ const (
 
 type EnvVarsMap map[string]string
 
-const CURRENT_ENV = PROD
+const CURRENT_ENV = DEV
 
 var envVarsMap = EnvVarsMap{}
 
