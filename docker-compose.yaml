@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  server:
+    build: "."
+    env_file:
+      - .env
+    ports:
+      - 8085:8080
+    depends_on:
+      - database
+  database:
+    image: mongo:6.0.3
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=dollar-prices-db
+    volumes:
+      - ./db-mongo-volume:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js

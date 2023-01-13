@@ -1,0 +1,4 @@
+/db
+.env.dev
+.env.local
+.env.prod

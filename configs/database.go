@@ -35,7 +35,7 @@ func ConnectMongoDB(client *mongo.Client) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Connected to MongoDB \nENV: %v", CURRENT_ENV)
+	fmt.Printf("Connected to MongoDB \nENV: %v", GetEnvVar("CURRENT_ENV"))
 }
 
 var DB *mongo.Client

@@ -1,7 +1,6 @@
 package configs
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -17,12 +16,10 @@ const (
 
 type EnvVarsMap map[string]string
 
-const CURRENT_ENV = DEV
-
 var envVarsMap = EnvVarsMap{}
 
 func LoadEnv() {
-	err := godotenv.Load(getEnvFilename())
+	err := godotenv.Load()
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -37,12 +34,8 @@ func GetEnvVar(e string) string {
 	return v
 }
 
-func getEnvFilename() string {
-	return fmt.Sprintf(".env.%v", strings.ToLower(CURRENT_ENV))
-}
-
 func loadEnvVarsMap() {
-	b, err := os.ReadFile(getEnvFilename())
+	b, err := os.ReadFile(".env")
 
 	if err != nil {
 		log.Fatalln(err)

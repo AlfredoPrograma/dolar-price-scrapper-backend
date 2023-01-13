@@ -61,7 +61,7 @@ func GetDollarPrices(c echo.Context) error {
 }
 
 func SeedDatabase(c echo.Context) error {
-	if configs.CURRENT_ENV == configs.PROD {
+	if configs.GetEnvVar("CURRENT_ENV") == configs.PROD {
 		return c.JSON(http.StatusNotFound, &echo.Map{"ok": false, "msg": "Route not found"})
 	}
 
