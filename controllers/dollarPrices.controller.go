@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"dollar-price-server/common"
+	"dollar-price-server/configs"
 	"dollar-price-server/models"
 	"encoding/json"
 	"io"
@@ -60,6 +61,10 @@ func GetDollarPrices(c echo.Context) error {
 }
 
 func SeedDatabase(c echo.Context) error {
+	if configs.CURRENT_ENV == configs.PROD {
+		return c.JSON(http.StatusNotFound, &echo.Map{"ok": false, "msg": "Route not found"})
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
