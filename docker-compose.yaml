@@ -18,5 +18,5 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=example
       - MONGO_INITDB_DATABASE=dollar-prices-db
     volumes:
-      - ./db-mongo-volume:/data/db
+      - ./_db-mongo-volume:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
