@@ -44,6 +44,10 @@ func loadEnvVarsMap() {
 	lines := strings.Split(string(b), "\n")
 
 	for _, l := range lines {
+		if len(string(l)) == 0 {
+			continue
+		}
+
 		if string(l[0]) == "#" {
 			continue
 		}
