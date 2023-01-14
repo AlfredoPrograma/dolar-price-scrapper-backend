@@ -11,7 +11,12 @@ import (
 )
 
 func CreateMongoClient() *mongo.Client {
-	mongoUri := GetEnvVar("MONGO_URI")
+	mongoUri := fmt.Sprintf(
+		"mongodb://%v:%v@database:27017/%v",
+		GetEnvVar("DB_USER"),
+		GetEnvVar("DB_PASSWORD"),
+		GetEnvVar("DB_NAME"),
+	)
 	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
 
 	if err != nil {
