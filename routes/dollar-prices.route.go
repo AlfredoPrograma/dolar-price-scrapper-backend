@@ -14,5 +14,4 @@ func DollarPricesRouter(e *echo.Echo) {
 	g.POST("", controllers.SaveDollarPrice)
 
 	g.GET("/seed", controllers.SeedDatabase)
-
 }
